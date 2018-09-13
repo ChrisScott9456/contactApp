@@ -20,12 +20,12 @@ mongoose.connect(config.database, { useNewUrlParser: true });
 
 //On MongoDB Connection
 mongoose.connection.on('connected', function(req, res) {
-	console.log('Connected to database ' + config.database);
+	console.log('Connected to database: ' + config.database);
 });
 
 //On MongoDB Error 
 mongoose.connection.on('error', function(err) {
-	console.log('Database error ' + err);
+	console.log('DATABASE ERROR: ' + err);
 });
 
 //Body-Parser Middleware

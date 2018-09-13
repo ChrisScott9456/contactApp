@@ -21,6 +21,18 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 		});
 	};
 
+	$scope.updateButton = function() {
+		let newContact = {
+			_id: 0,
+			FirstName: 'Chris',
+			LastName: 'Scott'
+		};
+
+		return $http.post('/updateContact', newContact).then(function(res) {
+			console.log(res.data);
+		});
+	}
+
 	$scope.postButton = function() {
 		let newContact = {
 			_id: 0
