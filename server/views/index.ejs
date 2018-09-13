@@ -10,8 +10,13 @@
 </head>
 
 <body>
-	<md-button class="md-raised md-primary" ng-click="postButton()">Post</md-button>
-	<md-button class="md-raised" ng-click="getButton()">Get</md-button>
+
+	<form>
+		<p><input type="text" ng-model="formID"> ID</p>
+		<md-button class="md-raised md-primary" ng-click="postButton()">Post</md-button>
+		<md-button class="md-raised" ng-click="getButton()">Get</md-button>
+		<md-button class="md-raised md-warn" ng-click="deleteButton()">Delete</md-button>
+	</form>
 
 	<!--Angular Libraries-->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
