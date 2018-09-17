@@ -1,0 +1,20 @@
+body {
+	font-family: 'Roboto';
+}
+
+.center {
+	display: flex;
+	align-items: center;
+    justify-content: center;
+}
+
+.centerColumn {
+	flex: 1;
+	max-width: 50%;
+	border-style: solid;
+	border-width: 1px;
+}
+
+#contactList {
+	background-color: #DFDFDF;
+}
