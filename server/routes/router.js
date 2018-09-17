@@ -68,6 +68,20 @@ router.post('/deleteContact/:id', function(req, res) {
 
 /***************************End of Contact REST Calls**************************/
 
+router.get('/getContactsList', function(req, res) {
+	Contact.getContactsList().then(function(resp) {
+		if(resp) {
+			res.send({count: resp});
+		}else {
+			console.log('Failure getting contact count!');
+			res.send({count: 0});
+		}
+	}).catch(function(err) {
+		console.log(err);
+		res.send({status: 'Contact Count Get Failure', msg: '' + err});
+	});
+});
+
 router.get('/', function(req, res) {
 	res.render('index.ejs');
 });

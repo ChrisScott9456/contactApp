@@ -15,8 +15,15 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 
 	$scope.contactList = [];
 
+	$scope.listContacts = function() {
+		$http.get('/getContactsList').then(function(res) {
+			console.log(res.data.count);
+			$scope.contactList = res.data.count;
+		});
+	};
+
 	$scope.getButton = function() {
-		let contactID = 0;
+		let contactID = 1;
 
 		return $http.get('/getContact/' + contactID).then(function(res) {
 			console.log(res.data);
@@ -25,15 +32,15 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 
 	$scope.updateButton = function() {
 		let newContact = {
-			_id: 0,
+			_id: 1,
 			OPCO: 'RGS',
 			ContactID: 000000001,
-			FirstName: 'Chris',
-			LastName: 'Scott',
-			JobTitle: 'Manager',
+			FirstName: 'John',
+			LastName: 'Doe',
+			JobTitle: 'Regional Manager',
 			Phone: {
-				Number: 9999999999,
-				Extension: 1,
+				String: '777-777-7777',
+				Extension: '1',
 				Type: 'Office'
 			},
 			Email: 'chris.scott@test.com',
@@ -47,7 +54,7 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 
 	$scope.postButton = function() {
 		let newContact = {
-			_id: 0
+			_id: 1
 		};
 
 		return $http.post('/createContact', newContact).then(function(res) {
@@ -56,7 +63,7 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 	};
 
 	$scope.deleteButton = function() {
-		let contactID = 0;
+		let contactID = 1;
 
 		return $http.post('/deleteContact/' + contactID).then(function(res) {
 			console.log(res.data);

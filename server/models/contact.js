@@ -32,11 +32,11 @@ const contactSchema = new Schema({
 
 	Phone: {
 		Number: {
-			type: Number
+			type: String
 		},
 
 		Extension: {
-			type: Number
+			type: String
 		},
 
 		Type: {
@@ -80,7 +80,7 @@ module.exports.createContact = function(newContact) {
 module.exports.updateContact = function(req) {
 	return new Promise(function(resolve, reject) {
 		if(req.body._id !== null) {
-			Contact.findOneAndUpdate(req.body._id, req.body, {new: true}).exec().then(function(resp) {
+			Contact.findByIdAndUpdate(req.body._id, req.body, {new: true}).exec().then(function(resp) {
 				resolve(resp);
 			}).catch(function(err) {
 				reject(err);
@@ -93,7 +93,17 @@ module.exports.updateContact = function(req) {
 
 module.exports.deleteContact = function(id) {
 	return new Promise(function(resolve, reject) {
-		Contact.findOneAndDelete({_id: id}).exec().then(function(resp) {
+		Contact.findByIdAndDelete(id).exec().then(function(resp) {
+			resolve(resp);
+		}).catch(function(err) {
+			reject(err);
+		});
+	});
+}
+
+module.exports.getContactsList = function() {
+	return new Promise(function(resolve, reject) {
+		Contact.find({}).exec().then(function(resp) {
 			resolve(resp);
 		}).catch(function(err) {
 			reject(err);
