@@ -66,6 +66,8 @@ router.post('/deleteContact/:id', function(req, res) {
 	});
 });
 
+/***************************End of Contact REST Calls**************************/
+
 router.get('/', function(req, res) {
 	res.render('index.ejs');
 });

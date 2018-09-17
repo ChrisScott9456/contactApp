@@ -24,8 +24,18 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 	$scope.updateButton = function() {
 		let newContact = {
 			_id: 0,
+			OPCO: 'RGS',
+			ContactID: 000000001,
 			FirstName: 'Chris',
-			LastName: 'Scott'
+			LastName: 'Scott',
+			JobTitle: 'Manager',
+			Phone: {
+				Number: 9999999999,
+				Extension: 1,
+				Type: 'Office'
+			},
+			Email: 'chris.scott@test.com',
+			Birthday: '12/12/2012'
 		};
 
 		return $http.post('/updateContact', newContact).then(function(res) {

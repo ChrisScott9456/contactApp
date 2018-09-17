@@ -8,13 +8,13 @@ const contactSchema = new Schema({
 		type: Number,
 	},
 
-	// OPCO: {
-	// 	type: String
-	// },
+	OPCO: {
+		type: String
+	},
 	
-	// ContactID: {
-	// 	type: Number
-	// },
+	ContactID: {
+		type: Number
+	},
 	
 	FirstName: {
 		type: String,
@@ -24,33 +24,33 @@ const contactSchema = new Schema({
 	LastName: {
 		type: String,
 		default: ""
+	},
+
+	JobTitle: {
+		type: String
+	},
+
+	Phone: {
+		Number: {
+			type: Number
+		},
+
+		Extension: {
+			type: Number
+		},
+
+		Type: {
+			type: String
+		}
+	},
+
+	Email: {
+		type: String
+	},
+
+	Birthday: {
+		type: Date
 	}
-
-	// JobTitle: {
-	// 	Type: String
-	// },
-
-	// Phone: {
-	// 	Number: {
-	// 		type: Number
-	// 	},
-
-	// 	Extension: {
-	// 		type: Number
-	// 	},
-
-	// 	Type: {
-	// 		type: String
-	// 	}
-	// },
-
-	// Email: {
-	// 	type: String
-	// },
-
-	// Birthday: {
-	// 	type: Date
-	// }
 },	
 
 { collection: 'Contacts' });
@@ -80,7 +80,7 @@ module.exports.createContact = function(newContact) {
 module.exports.updateContact = function(req) {
 	return new Promise(function(resolve, reject) {
 		if(req.body._id !== null) {
-			Contact.findOneAndUpdate(req.body._id, req.body).exec().then(function(resp) {
+			Contact.findOneAndUpdate(req.body._id, req.body, {new: true}).exec().then(function(resp) {
 				resolve(resp);
 			}).catch(function(err) {
 				reject(err);
