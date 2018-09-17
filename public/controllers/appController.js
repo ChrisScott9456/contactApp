@@ -13,6 +13,8 @@ contactApp.config(['$routeProvider', '$locationProvider', function($routeProvide
 
 contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http) {
 
+	$scope.contactList = [];
+
 	$scope.getButton = function() {
 		let contactID = 0;
 
