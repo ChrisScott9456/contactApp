@@ -49,7 +49,12 @@ const contactSchema = new Schema({
 	},
 
 	Birthday: {
-		type: Date
+		Month: {
+			type: String
+		},
+		Day: {
+			type: String
+		}
 	},
 
 	Address: {

@@ -4,6 +4,10 @@ body {
 	font-family: 'Roboto';
 }
 
+input {
+	font-style: italic;
+}
+
 .contactList {
 	padding: 5px;
 	background-color: #DFDFDF;
@@ -20,4 +24,13 @@ body {
 .cardLabel {
 	color: rgba(0,0,0,0.54);
 	padding-bottom: 5px;
+}
+
+.cardTitle {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.noMargin {
+	margin: 0;
 }
