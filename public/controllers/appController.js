@@ -13,6 +13,7 @@ contactApp.config(['$routeProvider', '$locationProvider', function($routeProvide
 
 contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http) {
 
+	$scope.newBirthday = "";
 	$scope.contactList = [];
 	var testID = 1;
 
@@ -36,16 +37,21 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 			_id: testID,
 			OPCO: 'RGS',
 			ContactID: 000000002,
-			FirstName: 'Chris',
-			LastName: 'Scott',
+			FirstName: 'John',
+			LastName: 'Doe',
 			JobTitle: 'Manager',
 			Phone: {
-				Number: '999-999-9999',
+				Type: 'Office',
 				Extension: 1,
-				Type: 'Office'
+				Number: '999-999-9999'
 			},
-			Email: 'chris.scott@test.com',
-			Birthday: '12/12/2012'
+			Email: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaachris.scott@test.com',
+			Birthday: '12/08/2012',
+			Address: '3000 Test Rd. Atlanta, GA 30308',
+			Connect: {
+				Call: '09/23/2014',
+				Visit: '05/12/2018'
+			}
 		};
 
 		return $http.post('/updateContact', newContact).then(function(res) {
@@ -71,4 +77,16 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 		});
 	}
 
+	$scope.formatBirthday = function(birthday) {
+		if(birthday) {
+			let newBirthday = "";
+
+			newBirthday += birthday.substring(5, 10) + "-"; //MM-DD-
+			newBirthday += birthday.substring(0, 4); //YYYY
+
+			return newBirthday; //MM-DD-YYYY
+		}else {
+			return "";
+		}
+	}
 }]);

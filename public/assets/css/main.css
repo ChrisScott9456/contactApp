@@ -1,24 +1,23 @@
-* {
-	border: 1px solid red;
-}
+
 
 body {
 	font-family: 'Roboto';
 }
 
-.center {
-	display: flex;
-	align-items: center;
-    justify-content: center;
-}
-
-.centerColumn {
-	flex: 1;
-	max-width: 50%;
-	border-style: solid;
-	border-width: 1px;
-}
-
-#contactList {
+.contactList {
+	padding: 5px;
 	background-color: #DFDFDF;
+}
+
+.truncate {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+	max-width: 500px;
+}
+
+.cardLabel {
+	color: rgba(0,0,0,0.54);
+	padding-bottom: 5px;
 }

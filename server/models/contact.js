@@ -31,7 +31,7 @@ const contactSchema = new Schema({
 	},
 
 	Phone: {
-		Number: {
+		Type: {
 			type: String
 		},
 
@@ -39,7 +39,7 @@ const contactSchema = new Schema({
 			type: String
 		},
 
-		Type: {
+		Number: {
 			type: String
 		}
 	},
@@ -50,6 +50,19 @@ const contactSchema = new Schema({
 
 	Birthday: {
 		type: Date
+	},
+
+	Address: {
+		type: String
+	},
+
+	Connect: {
+		Call: {
+			type: Date
+		},
+		Visit: {
+			type: Date
+		}
 	}
 },	
 

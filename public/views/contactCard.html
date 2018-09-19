@@ -1,77 +1,81 @@
 <md-card>
 	<!--MAIN CARD BODY-->
 	<md-card-content>
-		<div layout="column">
-			FirstName LastName
+		<md-layout="column">
+			{{contact.FirstName}} {{contact.LastName}} {{contact._id}}
 		</div>
 		<md-divider></md-divider>
 		<div layout="row">
 			<!--CARD DETAILS 1-->
-			<div flex style="height: 150px;">
-				<div layout="row">
-					<div layout="column">
-						<div layout="row" class="width-">
-							JobTitle
+			<div flex>
+				<div layout="row" style="padding: 5px;">
+					<div flex layout="column">
+						<div layout="row" style="padding-bottom: 5px;">
+							{{contact.JobTitle}}
 						</div>
 						<div>
-							Address
+							{{contact.Address}}
 						</div>
 					</div>
-
-					<div>
-						<div layout="row">
+					<!--flex="25" means 25%-->
+					<div flex="20">
+						<label class="cardLabel" layout="row">
 							Birthday
-						</div>
-						<div>
-							BIRTHDAY HERE
+						</label>
+						<div ng-init="contact.Birthday = formatBirthday(contact.Birthday)" ng-if="contact.Birthday">
+							{{contact.Birthday}}
 						</div>
 					</div>
 				</div>
-				<div layout="column">
+				<md-divider></md-divider>
+				<div layout="column" style="padding: 5px;">
 					<div layout="row">
-						TEST
-					</div>
-					<div>
-						TEST
+						<div flex="40" layout="column" style="padding-right: 5px;">
+							<span class="cardLabel">Email</span>
+							<div class="truncate">
+								<a href=https://mail.google.com/mail/u/0/?view=cm&fs=1&to={{contact.Email}}&subject=Subject&tf=1" target="_blank">{{contact.Email}}</a>
+							</div>
+						</div>
+						<div flex ng-if="contact.Phone" ng-repeat="(phoneKey, phoneVal) in contact.Phone">
+								<label class="cardLabel" layout="row">
+									{{phoneKey}}
+								</label>
+								<div>
+									{{phoneVal}}
+								</div>
+						</div>
 					</div>
 				</div>
-				<div>
-					<div layout="row">
-						TEST2
-					</div>
+				<md-divider></md-divider>
+				<div style="padding: 5px;">
+					<label class="cardLabel" layout="row">
+						LoB
+					</label>
 					<div>
-						TEST2
+						{{contact.OPCO}}
 					</div>
 				</div>
 			</div>
 			<!--CARD DETAILS 2 END-->
 			<!--BLANK SEPARATOR-->
-			<div layout="column" style="width: 40px; height: 150px;"></div>
+			<div layout="column" style="width: 40px;"></div>
 			<!--BLANK SEPARATOR END-->
 			<!--CARD DETAILS 2-->
-			<div style="width: 150px; height: 150px; padding: 5px; font-size: 14px;">
-				<div layout="column">
-						<label layout="row">
-							Digital
-						</label>
-						<div>
-							Tuesday | July 10, 2018
-						</div>
-				</div>
-				<div layout="column">
-					<div layout="row">
+			<div style="width: 150px; padding: 5px;">
+				<div layout="column" style="padding: 5px;">
+					<label class="cardLabel" layout="row">
 						Call
-					</div>
+					</label>
 					<div>
-						Friday | August 25, 2017
+						{{contact.Connect.Call}}
 					</div>
 				</div>
-				<div layout="column">
-					<div layout="row">
+				<div layout="column" style="padding: 5px;">
+					<label class="cardLabel" layout="row">
 						Visit
-					</div>
+					</label>
 					<div>
-						Thursday | December 12, 2016
+						{{contact.Connect.Visit}}
 					</div>
 				</div>
 			</div>
