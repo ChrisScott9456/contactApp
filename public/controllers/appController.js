@@ -15,6 +15,8 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 
 	$scope.newBirthday = "";
 	$scope.contactList = [];
+	$scope.weekdayMap = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+	$scope.monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	var testID = 1;
 
 	$scope.listContacts = function() {
@@ -81,10 +83,21 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 		if(birthday) {
 			let newBirthday = "";
 
-			newBirthday += birthday.substring(5, 10) + "-"; //MM-DD-
-			newBirthday += birthday.substring(0, 4); //YYYY
+			newBirthday = new Date(birthday);
 
-			return newBirthday; //MM-DD-YYYY
+			return newBirthday.getMonth()+1 + "/" + newBirthday.getDate() + "/" + newBirthday.getFullYear();
+		}else {
+			return "";
+		}
+	}
+
+	$scope.formatConnect = function(connect) {
+		if(connect) {
+			let newConnect = new Date(connect);
+			let newDay = $scope.weekdayMap[newConnect.getDay()];
+			let newMonth = $scope.monthMap[newConnect.getMonth()+1];
+
+			return newDay + " | " + newMonth + " " + newConnect.getDate() + ", " + newConnect.getFullYear();
 		}else {
 			return "";
 		}
