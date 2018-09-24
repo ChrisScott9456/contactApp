@@ -1,9 +1,9 @@
 <md-card>
 		<div layout="row" style="padding: 5px;">
-			<div flex layout="column" ng-show="!editContactForm" style="padding: 15px 0px 0px 10px;">
+			<div flex layout="column" ng-show="!contact.editContactForm" style="padding: 15px 0px 0px 10px;">
 				<span class="cardTitle">{{contact.FirstName}} {{contact.LastName}} {{contact._id}}</span>
 			</div>
-			<div flex layout="row" ng-show="editContactForm">
+			<div flex layout="row" ng-show="contact.editContactForm">
 				<md-input-container class="noMargin" layout="row">
 					<input type="text" ng-model="copyContact.FirstName" placeholder="">
 				</md-input-container>
@@ -15,8 +15,8 @@
 				<span>{{contactEditErrorMsg}}</span>
 			</div>
 			<div>
-				<md-button class="md-raised" ng-show="!editContactForm" ng-click="editContactForm=true; copyContact=contact; test()">Edit</md-button>
-				<md-button class="md-raised" ng-show="editContactForm" ng-click="updateContact(contact)">Save</md-button>
+				<md-button class="md-raised" ng-show="!contact.editContactForm" ng-click="contact.editContactForm=true; copyContact=contact;">Edit</md-button>
+				<md-button class="md-raised" ng-show="contact.editContactForm" ng-click="updateContact(contact)">Save</md-button>
 			</div>
 		</div>
 		<!--MAIN CARD BODY-->
@@ -27,10 +27,10 @@
 			<div flex>
 				<div layout="row" style="padding: 5px;">
 					<div flex layout="column">
-						<div ng-show="!editContactForm" layout="row" style="padding-bottom: 5px;">
+						<div ng-show="!contact.editContactForm" layout="row" style="padding-bottom: 5px;">
 							{{contact.JobTitle}}
 						</div>
-						<div layout="row" ng-show="editContactForm">
+						<div layout="row" ng-show="contact.editContactForm">
 						<md-input-container class="noMargin" layout="row">
 							<input type="text" ng-model="copyContact.JobTitle" placeholder="">
 						</md-input-container>
@@ -44,14 +44,14 @@
 						<label class="cardLabel" layout="row">
 							Birthday
 						</label>
-						<div ng-show="!editContactForm">
-							{{contact.Birthday}}
+						<div ng-show="!contact.editContactForm">
+							{{contact.Birthday.Month}} {{contact.Birthday.Day}}
 						</div>
-						<div layout="row" ng-show="editContactForm">
-							<md-select class="noMargin" ng-model="updatedBirthday.month" placeholder="MM">
+						<div layout="row" ng-show="contact.editContactForm">
+							<md-select class="noMargin" ng-model="copyContact.Birthday.Month" placeholder="MM">
 								<md-option ng-value="opt" ng-repeat="opt in monthMap">{{opt}}</md-option>
 							</md-select>
-							<md-select class="noMargin" ng-model="updatedBirthday.day" placeholder="DD">
+							<md-select class="noMargin" ng-model="copyContact.Birthday.Day" placeholder="DD">
 								<md-option ng-value="opt" ng-repeat="opt in dateMap">{{opt}}</md-option>
 							</md-select>
 						</div>
@@ -62,34 +62,44 @@
 					<div layout="row">
 						<div flex="40" layout="column" style="padding-right: 5px;">
 							<span class="cardLabel">Email</span>
-							<div ng-show="!editContactForm" class="truncate">
+							<div ng-show="!contact.editContactForm" class="truncate">
 								<a href=https://mail.google.com/mail/u/0/?view=cm&fs=1&to={{contact.Email}}&subject=Subject&tf=1" target="_blank">{{contact.Email}}</a>
 							</div>
-							<div layout="row" ng-show="editContactForm">
+							<div layout="row" ng-show="contact.editContactForm">
 								<md-input-container class="noMargin" layout="row">
 									<input type="text" ng-model="copyContact.Email" placeholder="">
 								</md-input-container>
 							</div>
 						</div>
-						<div flex ng-if="contact.Phone" ng-repeat="(phoneKey, phoneVal) in contact.Phone">
-								<label class="cardLabel" layout="row">
-									{{phoneKey}}
-								</label>
-								<div ng-show="!editContactForm">
-									{{phoneVal}}
-								</div>
-								<div layout="row" ng-show="editContactForm">
-									<md-input-container class="noMargin" layout="row">
-										<input type="text" ng-model="phoneVal" placeholder="">
-									</md-input-container>
-								</div>
+						<div flex layout="row">
+							<div flex>
+								<label class="cardLabel" layout="row">Type</label>
+								<div layout="row" ng-show="!contact.editContactForm">{{contact.Phone.Type}}</div>
+								<md-input-container class="noMargin" layout="row" ng-show="contact.editContactForm">
+									<input type="text" ng-model="copyContact.Phone.Type" placeholder="">
+								</md-input-container>
+							</div>
+							<div flex>
+								<label class="cardLabel" layout="row">Extension</label>
+								<div layout="row" ng-show="!contact.editContactForm">{{contact.Phone.Extension}}</div>
+								<md-input-container class="noMargin" layout="row" ng-show="contact.editContactForm">
+									<input type="text" ng-model="copyContact.Phone.Extension" placeholder="">
+								</md-input-container>
+							</div>
+							<div flex>
+								<label class="cardLabel" layout="row">Number</label>
+								<div layout="row" ng-show="!contact.editContactForm">{{contact.Phone.Number}}</div>
+								<md-input-container class="noMargin" layout="row" ng-show="contact.editContactForm">
+									<input type="text" ng-model="copyContact.Phone.Number" placeholder="">
+								</md-input-container>
+							</div>
 						</div>
 					</div>
 				</div>
 				<md-divider></md-divider>
 				<div style="padding: 5px;">
 					<label class="cardLabel" layout="row">
-						LoB
+						LoBs
 					</label>
 					<div>
 						{{contact.OPCO}}

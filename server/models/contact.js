@@ -53,7 +53,7 @@ const contactSchema = new Schema({
 			type: String
 		},
 		Day: {
-			type: String
+			type: Number
 		}
 	},
 

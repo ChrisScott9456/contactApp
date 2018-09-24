@@ -13,18 +13,12 @@ contactApp.config(['$routeProvider', '$locationProvider', function($routeProvide
 
 contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http) {
 
-	$scope.editContactForm = false;
 	$scope.copyContact = {};
-	$scope.updatedBirthday = {month: "", day: ""};
 	$scope.contactList = [];
 	$scope.dateMap = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
 	$scope.weekdayMap = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	$scope.monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	var testID = 1;
-
-	$scope.test = function() {
-		console.log("TEST" + $scope.editContactForm);
-	}
 
 	$scope.listContacts = function() {
 		$http.get('/getContactsList').then(function(res) {
@@ -41,44 +35,54 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 		});
 	};
 
-	$scope.updateContact = function(contact) {
-		console.log($scope.editContactForm);
+	$scope.updateContact = function(contact, editContactForm) {
 		let errorFlag = false;
-		let errorCount = 0;
-		$scope.contactEditErrors = [];
 		$scope.contactEditErrorMsg = "";
 		$scope.copyContact = contact;
 		console.log($scope.copyContact);
 
-		if($scope.copyContact.FirstName == undefined || $scope.copyContact.FirstName == ''){
+		if(!$scope.validateName($scope.copyContact.FirstName)) {
 			errorFlag = true;
-			$scope.contactEditErrors[errorCount] = "FirstName";
-			errorCount++;
+			$scope.contactEditErrorMsg += "First Name must not be blank and can only contain letters, single quotes, and dashes!\n";
 		}
-		if($scope.copyContact.LastName == undefined || $scope.copyContact.LastName == ''){
+		if(!$scope.validateName($scope.copyContact.LastName)){
 			errorFlag = true;
-			$scope.contactEditErrors[errorCount] = "LastName";
-			errorCount++;
+			$scope.contactEditErrorMsg += "Last Name, ";
 		}
+
 		if($scope.copyContact.Phone.Number == undefined || $scope.copyContact.Phone.Number == ''){
-			errorFlag = true;
-			$scope.contactEditErrors[errorCount] = "Phone or Email";
-			errorCount++;
-		}else if($scope.copyContact.Email == undefined || $scope.copyContact.Email == ''){
-			errorFlag = true;
-			$scope.contactEditErrors[errorCount] = "Phone or Email";
-			errorCount++;
+			if($scope.copyContact.Email == undefined || $scope.copyContact.Email == ''){
+				errorFlag = true;
+				$scope.contactEditErrorMsg += "Phone or Email, ";
+			}
 		}
 		
-		if(errorFlag) {
-			$scope.contactEditErrorMsg = "The following fields must be filled: " + $scope.contactEditErrors.toString();
-		}else {
-			$scope.editContactForm = false;
-			// $http.post('/updateContact', $scope.copyContact).then(function(res) {
-			// 	console.log(res.data);
-			// });
+		if(!errorFlag) {
+			contact.editContactForm = false;
+
+			let updateContact = {
+				_id: $scope.copyContact._id,
+				FirstName: $scope.copyContact.FirstName,
+				LastName: $scope.copyContact.LastName,
+				JobTitle: $scope.copyContact.JobTitle,
+				Phone: {
+					Type: $scope.copyContact.Phone.Type,
+					Extension: $scope.copyContact.Phone.Extension,
+					Number: $scope.copyContact.Phone.Number
+				},
+				Email: $scope.copyContact.Email,
+				Birthday: {
+					Month: $scope.copyContact.Birthday.Month,
+					Day: $scope.copyContact.Birthday.Day
+				},
+				Address: $scope.copyContact.Address
+			}
+
+			$http.post('/updateContact', updateContact).then(function(res) {
+				console.log(res.data);
+			});
 		}
-	}
+	};
 
 	$scope.updateButton = function() {
 		let newContact = {
@@ -94,7 +98,10 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 				Number: '999-999-9999'
 			},
 			Email: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaachris.scott@test.com',
-			Birthday: '12/08/2012',
+			Birthday: {
+				Month: "Aug",
+				Day: 12
+			},
 			Address: '3000 Test Rd. Atlanta, GA 30308',
 			Connect: {
 				Call: '09/23/2014',
@@ -105,7 +112,7 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 		return $http.post('/updateContact', newContact).then(function(res) {
 			console.log(res.data);
 		});
-	}
+	};
 
 	$scope.postButton = function() {
 		let newContact = {
@@ -123,7 +130,7 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 		return $http.post('/deleteContact/' + testID).then(function(res) {
 			console.log(res.data);
 		});
-	}
+	};
 
 	$scope.formatConnect = function(connect) {
 		if(connect) {
@@ -135,5 +142,19 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 		}else {
 			return "";
 		}
-	}
+	};
+
+	$scope.validateName = function(name) {
+		let letters = /^[a-zA-z '-]+$/; //Regex for name validation (letters, single quote, and dashes only)
+
+		if(name != undefined || name != ''){
+			if(name.match(letters)) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+
 }]);
