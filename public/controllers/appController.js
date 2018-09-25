@@ -37,48 +37,120 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 
 	$scope.updateContact = function(contact, editContactForm) {
 		let errorFlag = false;
-		$scope.contactEditErrorMsg = "";
+		contact.contactEditErrorMsg = "";
+		contact.fNameInvalidError = false;
+		contact.lNameInvalidError = false;
+		contact.fNameMissingError = false;
+		contact.lNameMissingError = false;
+		contact.emailInvalidError = false;
+		contact.phoneExtensionInvalidError = false;
+		contact.phoneNumberInvalidError = false;
+		contact.phoneTypeInvalidError = false;
+		contact.titleInvalidError = false;
+
 		$scope.copyContact = contact;
-		console.log($scope.copyContact);
 
-		if(!$scope.validateName($scope.copyContact.FirstName)) {
-			errorFlag = true;
-			$scope.contactEditErrorMsg += "First Name must not be blank and can only contain letters, single quotes, and dashes!\n";
-		}
-		if(!$scope.validateName($scope.copyContact.LastName)){
-			errorFlag = true;
-			$scope.contactEditErrorMsg += "Last Name, ";
-		}
+		//Remove extra whitespace before and after input
+		$scope.copyContact.FirstName = $scope.copyContact.FirstName.trim();
+		$scope.copyContact.LastName = $scope.copyContact.LastName.trim();
+		$scope.copyContact.Phone.Number = $scope.copyContact.Phone.Number.trim();
+		$scope.copyContact.Phone.Extension = $scope.copyContact.Phone.Extension.trim();
+		$scope.copyContact.Phone.Type = $scope.copyContact.Phone.Type.trim();
+		$scope.copyContact.Email = $scope.copyContact.Email.trim();
+		$scope.copyContact.JobTitle = $scope.copyContact.JobTitle.trim();
 
+		/////////////////////////////////////////////
+
+		let nameRegex = /^[a-zA-z '-]+$/; //Regex for first & last name validation (letters, single quote, and dashes only)
+
+		//Check if First Name is missing or invalid
+		if($scope.copyContact.FirstName != undefined && $scope.copyContact.FirstName != ''){
+			if(!$scope.copyContact.FirstName.match(nameRegex)) {
+				contact.fNameInvalidError = true;
+				errorFlag = true;
+			}
+		}else {
+			contact.fNameMissingError = true;
+			errorFlag = true;
+		}
+		/////////////////////////////////////////////
+
+		//Check if Last Name is missing or invalid
+		if($scope.copyContact.LastName != undefined && $scope.copyContact.LastName != ''){
+			if(!$scope.copyContact.LastName.match(nameRegex)) {
+				contact.lNameInvalidError = true;
+				errorFlag = true;
+			}
+		}else {
+			contact.lNameMissingError = true;
+			errorFlag = true;
+		}
+		/////////////////////////////////////////////
+
+		let phoneNumRegex = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/; //Regex for matching phone number in 999-999-9999 format
+
+		//Check if Phone Number is invalid
+		if(!$scope.copyContact.Phone.Number.match(phoneNumRegex)) {
+			contact.phoneNumberInvalidError = true;
+			errorFlag = true;
+		}
+		/////////////////////////////////////////////
+
+		let phoneExtRegex = /^[0-9]*\s*[0-9]*$/; //Regex for matching phone extension (can be a single number or two numbers with a space between them)
+		//Example: 1
+		//Example: 1 264
+		//Example: 591
+
+		//Check if Phone Extension is invalid
+		if(!$scope.copyContact.Phone.Extension.match(phoneExtRegex)) {
+			contact.phoneExtensionInvalidError = true;
+			errorFlag = true;
+		}
+		/////////////////////////////////////////////
+
+		let phoneTypeRegex = /^[a-zA-z ]*$/; //Regex for matching phone type (only letters and spaces)
+
+		//Check if Phone Type is invalid
+		if(!$scope.copyContact.Phone.Type.match(phoneTypeRegex)) {
+			contact.phoneTypeInvalidError = true;
+			errorFlag = true;
+		}
+		/////////////////////////////////////////////
+
+		let emailRegex = /^.+@.+\..+$/;
+
+		//Check if Email is invalid
+		if(!$scope.copyContact.Email.match(emailRegex)) {
+			contact.emailInvalidError = true;
+			errorFlag = true;
+		}
+		/////////////////////////////////////////////
+
+		//Check if phone or email are filled
 		if($scope.copyContact.Phone.Number == undefined || $scope.copyContact.Phone.Number == ''){
 			if($scope.copyContact.Email == undefined || $scope.copyContact.Email == ''){
+				contact.contactEditErrorMsg += "Must have Phone or Email!";
 				errorFlag = true;
-				$scope.contactEditErrorMsg += "Phone or Email, ";
 			}
 		}
+
+		/////////////////////////////////////////////
+
+		let jobTitleRegex = /^[a-zA-z ]*$/; //Regex for matching job title (only letters and spaces)
+
+		//Check if Job Title is invalid
+		if(!$scope.copyContact.JobTitle.match(jobTitleRegex)) {
+			contact.titleInvalidError = true;
+			errorFlag = true;
+		}
+
+		/////////////////////////////////////////////
+
 		
 		if(!errorFlag) {
 			contact.editContactForm = false;
 
-			let updateContact = {
-				_id: $scope.copyContact._id,
-				FirstName: $scope.copyContact.FirstName,
-				LastName: $scope.copyContact.LastName,
-				JobTitle: $scope.copyContact.JobTitle,
-				Phone: {
-					Type: $scope.copyContact.Phone.Type,
-					Extension: $scope.copyContact.Phone.Extension,
-					Number: $scope.copyContact.Phone.Number
-				},
-				Email: $scope.copyContact.Email,
-				Birthday: {
-					Month: $scope.copyContact.Birthday.Month,
-					Day: $scope.copyContact.Birthday.Day
-				},
-				Address: $scope.copyContact.Address
-			}
-
-			$http.post('/updateContact', updateContact).then(function(res) {
+			$http.post('/updateContact', $scope.copyContact).then(function(res) {
 				console.log(res.data);
 			});
 		}
@@ -143,18 +215,5 @@ contactApp.controller('contactCtrl', ['$scope', '$http', function($scope, $http)
 			return "";
 		}
 	};
-
-	$scope.validateName = function(name) {
-		let letters = /^[a-zA-z '-]+$/; //Regex for name validation (letters, single quote, and dashes only)
-
-		if(name != undefined || name != ''){
-			if(name.match(letters)) {
-				return true;
-			}
-		}
-
-		return false;
-	};
-
 
 }]);

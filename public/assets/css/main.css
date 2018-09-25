@@ -36,5 +36,8 @@ input {
 
 .contactError {
 	color: red;
+}
+
+.phoneError {
 	font-size: 12px;
 }

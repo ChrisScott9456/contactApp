@@ -1,18 +1,26 @@
 <md-card>
 		<div layout="row" style="padding: 5px;">
 			<div flex layout="column" ng-show="!contact.editContactForm" style="padding: 15px 0px 0px 10px;">
-				<span class="cardTitle">{{contact.FirstName}} {{contact.LastName}} {{contact._id}}</span>
+				<span class="cardTitle">[{{contact._id}}] {{contact.FirstName}} {{contact.LastName}}</span>
 			</div>
 			<div flex layout="row" ng-show="contact.editContactForm">
-				<md-input-container class="noMargin" layout="row">
-					<input type="text" ng-model="copyContact.FirstName" placeholder="">
-				</md-input-container>
-				<md-input-container class="noMargin">
-					<input type="text" ng-model="copyContact.LastName" placeholder="">
-				</md-input-container>
+				<div layout="column">
+					<md-input-container class="noMargin" layout="row" md-no-float="">
+					<input type="text" ng-model="copyContact.FirstName" placeholder="First Name">
+					</md-input-container>
+					<div class="contactError" ng-if="contact.fNameInvalidError">Invalid First Name</div>
+					<div class="contactError" ng-if="contact.fNameMissingError">Enter First Name</div>
+				</div>
+				<div layout="column">
+					<md-input-container class="noMargin" layout="row" md-no-float="">
+					<input type="text" ng-model="copyContact.LastName" placeholder="Last Name">
+					</md-input-container>
+					<div class="contactError" ng-if="contact.lNameInvalidError">Invalid Last Name</div>
+					<div class="contactError" ng-if="contact.lNameMissingError">Enter Last Name</div>
+				</div>
 			</div>
-			<div class="contactError" ng-show="contactEditErrorMsg">
-				<span>{{contactEditErrorMsg}}</span>
+			<div class="contactError" ng-show="contact.contactEditErrorMsg">
+				<span>{{contact.contactEditErrorMsg}}</span>
 			</div>
 			<div>
 				<md-button class="md-raised" ng-show="!contact.editContactForm" ng-click="contact.editContactForm=true; copyContact=contact;">Edit</md-button>
@@ -31,9 +39,10 @@
 							{{contact.JobTitle}}
 						</div>
 						<div layout="row" ng-show="contact.editContactForm">
-						<md-input-container class="noMargin" layout="row">
-							<input type="text" ng-model="copyContact.JobTitle" placeholder="">
+						<md-input-container class="noMargin" layout="row" md-no-float="">
+							<input type="text" ng-model="copyContact.JobTitle" placeholder="Job Title">
 						</md-input-container>
+						<div class="contactError" ng-if="contact.titleInvalidError">Invalid Job Title</div>
 						</div>
 						<div>
 							{{contact.Address}}
@@ -66,32 +75,36 @@
 								<a href=https://mail.google.com/mail/u/0/?view=cm&fs=1&to={{contact.Email}}&subject=Subject&tf=1" target="_blank">{{contact.Email}}</a>
 							</div>
 							<div layout="row" ng-show="contact.editContactForm">
-								<md-input-container class="noMargin" layout="row">
-									<input type="text" ng-model="copyContact.Email" placeholder="">
+								<md-input-container class="noMargin" layout="row" md-no-float="">
+									<input type="text" ng-model="copyContact.Email" placeholder="example@domain.com">
 								</md-input-container>
+								<div class="contactError" ng-if="contact.emailInvalidError">Invalid Email</div>
 							</div>
 						</div>
 						<div flex layout="row">
 							<div flex>
 								<label class="cardLabel" layout="row">Type</label>
 								<div layout="row" ng-show="!contact.editContactForm">{{contact.Phone.Type}}</div>
-								<md-input-container class="noMargin" layout="row" ng-show="contact.editContactForm">
-									<input type="text" ng-model="copyContact.Phone.Type" placeholder="">
+								<md-input-container class="noMargin" layout="row" md-no-float="" ng-show="contact.editContactForm">
+									<input type="text" ng-model="copyContact.Phone.Type" placeholder="Type">
 								</md-input-container>
+								<div class="contactError phoneError" ng-if="contact.phoneTypeInvalidError">Invalid Phone Type</div>
 							</div>
 							<div flex>
 								<label class="cardLabel" layout="row">Extension</label>
 								<div layout="row" ng-show="!contact.editContactForm">{{contact.Phone.Extension}}</div>
-								<md-input-container class="noMargin" layout="row" ng-show="contact.editContactForm">
-									<input type="text" ng-model="copyContact.Phone.Extension" placeholder="">
+								<md-input-container class="noMargin" layout="row" md-no-float="" ng-show="contact.editContactForm">
+									<input type="text" ng-model="copyContact.Phone.Extension" placeholder="1">
 								</md-input-container>
+								<div class="contactError phoneError" ng-if="contact.phoneExtensionInvalidError">Invalid Phone Extension</div>
 							</div>
 							<div flex>
 								<label class="cardLabel" layout="row">Number</label>
 								<div layout="row" ng-show="!contact.editContactForm">{{contact.Phone.Number}}</div>
-								<md-input-container class="noMargin" layout="row" ng-show="contact.editContactForm">
-									<input type="text" ng-model="copyContact.Phone.Number" placeholder="">
+								<md-input-container class="noMargin" layout="row" md-no-float="" ng-show="contact.editContactForm">
+									<input type="text" ng-model="copyContact.Phone.Number" placeholder="000-000-0000">
 								</md-input-container>
+								<div class="contactError phoneError" ng-if="contact.phoneNumberInvalidError">Invalid Phone Number</div>
 							</div>
 						</div>
 					</div>
